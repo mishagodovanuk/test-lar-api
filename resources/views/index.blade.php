@@ -73,53 +73,69 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data"
-                      class="user-form grid grid-cols-1 gap-4 p-6 rounded-lg shadow-2xl shadow-gray-500/20
-                             bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent
-                             dark:ring-1 dark:ring-inset dark:ring-white/5
-                             text-gray-900 dark:text-white">
-                    @csrf
-                    <h2 class="text-xl font-semibold mb-4">Add New User</h2>
+                    <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data"
+                          class="user-form grid grid-cols-1 gap-4 p-6 rounded-lg shadow-2xl shadow-gray-500/20
+                                 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent
+                                 dark:ring-1 dark:ring-inset dark:ring-white/5
+                                 text-gray-900 dark:text-white">
+                        @csrf
+                        <h2 class="text-xl font-semibold mb-4">Add New User</h2>
 
-                    <div class="form-field grid gap-2 mb-4">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
-                        <input type="text" id="name" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
-                      bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-                      focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Username" name="name"/>
-                    </div>
+                        <div class="form-field grid gap-2 mb-4">
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                            <input type="text" id="name" name="name" placeholder="Username"
+                                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
+                                            bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                                            focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
 
-                    <div class="form-field grid gap-2 mb-4">
-                        <label for="email" class="block text-gray-700 dark:text-gray-300">Email</label>
-                        <input type="email" name="email" id="email" placeholder="Email"
-                               class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
-                      bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-                      focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
+                        <div class="form-field grid gap-2 mb-4">
+                            <label for="email" class="block text-gray-700 dark:text-gray-300">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Email"
+                                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
+                                            bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                                            focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
 
-                    <div class="form-field grid gap-2  mb-4">
-                        <label for="password" class="block text-gray-700 dark:text-gray-300">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Password"
-                               class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
-                      bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
-                      focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
+                        <div class="form-field grid gap-2 mb-4">
+                            <label for="phone" class="block text-gray-700 dark:text-gray-300">Phone</label>
+                            <input type="text" id="phone" name="phone" placeholder="+380XXXXXXXXX"
+                                   class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
+                                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
 
-                    <div class="form-field grid gap-2 mb-4">
-                        <label for="image" class="block text-gray-700 dark:text-gray-300">Profile Image</label>
-                        <input type="file" name="image" id="image"
-                               class="mt-1 block w-full text-gray-900 dark:text-gray-100
-                      focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
+                        <div class="form-field grid gap-2 mb-4">
+                            <label for="position_id" class="block text-gray-700 dark:text-gray-300">Position</label>
+                            @php
+                                $positions = \App\Models\User::getPositions();
+                            @endphp
+                            <select id="position_id" name="position_id"
+                                    class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded
+                                           bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+                                           focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                @foreach ($positions as $id => $label)
+                                    <option value="{{ $id }}">{{ ucfirst($label) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <button type="submit"
-                            class="p-3 min-w-[48px] text-center
-                                          bg-yellow-800/50 bg-gradient-to-bl from-yellow-700/50 via-transparent
-                                          dark:ring-1 dark:ring-inset dark:ring-yellow/5 rounded-full shadow-2xl shadow-gray-500/20
-                                          text-gray-700 dark:text-black-300 hover:bg-yellow-100 dark:hover:bg-gray-700
-                                          transition-colors duration-195">
-                        Add User
-                    </button>
-                </form>
+                        <div class="form-field grid gap-2 mb-4">
+                            <label for="image" class="block text-gray-700 dark:text-gray-300">Profile Image</label>
+                            <input type="file" id="image" name="image"
+                                   class="mt-1 block w-full text-gray-900 dark:text-gray-100
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <button type="submit"
+                                class="p-3 min-w-[48px] text-center
+                                       bg-yellow-800/50 bg-gradient-to-bl from-yellow-700/50 via-transparent
+                                       dark:ring-1 dark:ring-inset dark:ring-yellow/5 rounded-full shadow-2xl shadow-gray-500/20
+                                       text-gray-700 dark:text-black-300 hover:bg-yellow-100 dark:hover:bg-gray-700
+                                       transition-colors duration-195">
+                            Add User
+                        </button>
+                    </form>
 
             </div>
 
@@ -128,14 +144,16 @@
                 <div id="user-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     @forelse($users as $user)
                         <div class="gap-4 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 flex flex-col items-center">
-                            @if($user->avatar)
-                                <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}" class="h-16 w-16 rounded-full mb-2">
+                            @if($user->photo)
+                                <img src="{{ asset($user->photo) }}" alt="{{ $user->name }}" class="h-16 w-16 rounded-full mb-2">
                             @else
                                 <img src="{{ asset('img/default.jpg') }}" alt="Default Avatar" class="h-16 w-16 rounded-full mb-2">
                             @endif
                             <div>
                                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ $user->name }}</h2>
                                 <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">{{ $user->email }}</p>
+                                <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">{{ $user->phone }}</p>
+                                <p class="mt-2 text-gray-500 dark:text-gray-400 text-sm">{{ \App\Models\User::getPosition($user->position_id) }}</p>
                             </div>
                         </div>
                     @empty

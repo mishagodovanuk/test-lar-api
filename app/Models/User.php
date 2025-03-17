@@ -8,9 +8,22 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ *
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
+
+    /**
+     * Admin position.
+     */
+    public const POSITION_ADMIN = 1;
+
+    /**
+     * User position.
+     */
+    public const POSITION_USER = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -20,8 +33,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'avatar',
+        'position_id',
+        'photo',
+        'phone',
     ];
 
     /**
@@ -30,7 +44,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
@@ -40,6 +53,26 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'password' => 'hashed',
     ];
+
+    /**
+     * @return string[]
+     */
+    public static function getPositions(): array
+    {
+        return [
+            self::POSITION_ADMIN => 'admin',
+            self::POSITION_USER => 'user',
+        ];
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public static function getPosition($id): string
+    {
+        $positions = self::getPositions();
+        return $positions[$id] ?? 'Unknown';
+    }
 }

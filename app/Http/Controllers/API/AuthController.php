@@ -14,7 +14,6 @@ use Illuminate\Validation\ValidationException;
  */
 class AuthController extends Controller
 {
-    // Register a new user and issue a token
     /**
      * @param Request $request
      * @return JsonResponse

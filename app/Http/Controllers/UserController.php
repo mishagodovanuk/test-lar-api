@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
@@ -38,10 +37,11 @@ class UserController extends Controller
     public function store(Request $request): JsonResponse|RedirectResponse
     {
         $data = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
-            'password' => 'required|string|min:6',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|max:255|unique:users,email',
+            'image'       => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'phone'       => ['required', 'regex:/^(\+?380\d{9})$/'],
+            'position_id' => 'required|integer',
         ]);
 
         $file = $request->file('image');
@@ -76,20 +76,21 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'avatar'   => 'uploads/' . $filename,
-            'password' => Hash::make($data['password']),
+            'name'          => $data['name'],
+            'email'         => $data['email'],
+            'photo'         => 'uploads/' . $filename,
+            'position_id'   => $data['position_id'],
+            'phone' => $data['phone'],
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         if ($request->wantsJson()) {
             return response()->json([
-                'message' => 'User added successfully!',
-                'user'    => $user,
-                'status'  => 'success',
-                'access_token' => $token,
+                'message'       => 'User added successfully!',
+                'user'          => $user,
+                'status'        => 'success',
+                'access_token'  => $token,
             ], 201);
         }
 

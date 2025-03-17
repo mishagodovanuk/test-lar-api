@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
-            $table->string('avatar')->nullable(); // store image file path
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }
